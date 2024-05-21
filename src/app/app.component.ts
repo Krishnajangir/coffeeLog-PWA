@@ -84,6 +84,9 @@ export class AppComponent implements OnInit {
           });
         })
       });
+      this.snackBar.open('You can install this app from right click on menu bar and there you will see install App option', '', {
+        duration: 5000,
+      });
     }
 
     if (this.platform.IOS) {
@@ -96,14 +99,4 @@ export class AppComponent implements OnInit {
       }
     }
   }
-
-  public addToHomeScreen(): void {
-    this.modalPwaEvent.prompt();
-    this.modalPwaPlatform = undefined;
-  }
-
-  public closePwa(): void {
-    this.modalPwaPlatform = undefined;
-  }
-
 }
