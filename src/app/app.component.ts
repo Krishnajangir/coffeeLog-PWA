@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
 
   constructor(private snackBar: MatSnackBar) {}
   ngOnInit(): void {
-    if (window.matchMedia('display-mode: browser').matches) {
+    if (window.matchMedia('(display-mode: browser').matches) {
       //we are in browser
       if ('standalone' in navigator) {
         //only available in safari
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
           { duration: 3000 }
         );
       } else {
-        window.addEventListener('beforeInstallPrompt', (event) => {
+        window.addEventListener('beforeinstallprompt', (event) => {
           event.preventDefault();
           const sb = this.snackBar.open('You can install this app', 'install', {
             duration: 5000,
