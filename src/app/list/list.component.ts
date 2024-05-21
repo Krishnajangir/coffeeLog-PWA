@@ -6,6 +6,7 @@ import {MatIconModule} from '@angular/material/icon';
 
 import { DataService } from '../data.service';
 import { Router } from '@angular/router';
+import { PlaceLocation } from '../coffee-logic/PlaceLocation';
 
 @Component({
   selector: 'app-list',
@@ -23,6 +24,14 @@ export class ListComponent {
 
   goToDetails(coffee: Coffee) {
    this.router.navigate(["/coffee", coffee._id])
+  }
+
+  addNewCoffee() {
+    this.list.push( new Coffee('1', 'Double Espresso', 'cafe Tortoni', new PlaceLocation("Av. de mayo 600", "Buenos Aires")))
+  }
+
+  deleteCoffee(id: number) {
+    this.list.splice(id, 1);
   }
 
 }

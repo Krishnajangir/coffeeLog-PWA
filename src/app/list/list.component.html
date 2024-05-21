@@ -1,4 +1,4 @@
-@for (coffee of list; track coffee.type) {
+@for (coffee of list; track coffee.type;let index = $index) {
 <mat-card>
     <mat-card-header>
       <mat-card-title> {{coffee.name}}</mat-card-title>
@@ -8,8 +8,9 @@
       <button mat-button><mat-icon>map</mat-icon>Map</button>
       <button mat-button><mat-icon>share</mat-icon>Share</button>
       <button mat-button (click)="goToDetails(coffee)"><mat-icon>details</mat-icon>Details</button>
+      <button mat-button (click)="deleteCoffee(index)"><mat-icon>delete</mat-icon>Delete</button>
     </mat-card-actions>
   </mat-card>
 
-  <a id="buttonCreate" mat-fab routerlink="/coffee"><mat-icon>add</mat-icon></a>
+  <a id="buttonCreate" mat-fab (click)="addNewCoffee()"><mat-icon>add</mat-icon></a>
 }
