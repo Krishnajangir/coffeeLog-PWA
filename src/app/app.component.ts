@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Platform } from '@angular/cdk/platform';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { filter, map } from 'rxjs';
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   modalPwaPlatform: string|undefined;
 
   constructor(private platform: Platform,
-              private swUpdate: SwUpdate) {
+              private swUpdate: SwUpdate, private snackBar: MatSnackBar) {
     this.isOnline = false;
     this.modalVersion = false;
   }
@@ -49,7 +49,6 @@ export class AppComponent implements OnInit {
         }),
       );
     }
-
     this.loadModalPwa();
   }
 
@@ -71,15 +70,29 @@ export class AppComponent implements OnInit {
     if (this.platform.ANDROID) {
       window.addEventListener('beforeinstallprompt', (event: any) => {
         event.preventDefault();
-        this.modalPwaEvent = event;
-        this.modalPwaPlatform = 'ANDROID';
+        const sb = this.snackBar.open('You can install this app', 'install', {
+          duration: 5000,
+        });
+        sb.onAction().subscribe(() => {
+          (event as any).prompt();
+          (event as any).userChoice.then((result: any) => {
+            if (result.outcome === 'dismissed') {
+              this.snackBar.open("User cancel the installation process", "", {duration: 3000})
+            } else {
+              this.snackBar.open("Yeah you have dowbloaded this APP enjoy this", "", {duration: 3000})
+            }
+          });
+        })
       });
     }
 
-    if (this.platform.IOS && this.platform.SAFARI) {
+    if (this.platform.IOS) {
       const isInStandaloneMode = ('standalone' in window.navigator) && ((<any>window.navigator)['standalone']);
       if (!isInStandaloneMode) {
-        this.modalPwaPlatform = 'IOS';
+        this.snackBar.open('You can install this app, use Share > Add to home screen',
+        '',
+        { duration: 3000 }
+      );
       }
     }
   }
